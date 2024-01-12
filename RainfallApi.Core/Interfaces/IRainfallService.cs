@@ -9,6 +9,6 @@ namespace RainfallApi.Core.Interfaces
 {
     public interface IRainfallService
     {
-        Task<List<RainfallReading>> GetRainfallReadingsAsync(string stationId, int count = 10);
+        Task<List<RainfallReading>> GetRainfallReadingsAsync(int stationId, int count = 10);
     }
 }

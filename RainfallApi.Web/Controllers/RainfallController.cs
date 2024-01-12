@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using RainfallApi.Application.Helpers;
 using RainfallApi.Core.Entities;
+using RainfallApi.Core.Error;
 using RainfallApi.Core.Interfaces;
 using RainfallApi.Web.Responses;
 using Swashbuckle.AspNetCore.Annotations;
@@ -49,12 +51,43 @@ namespace RainfallApi.Web.Controllers
         {
             try
             {
-                var readings = await _rainfallService.GetRainfallReadingsAsync(stationId, count);
+                if (!ValidationHelpers.IsValidStationId(stationId, out int validStationId))
+                {
+                    return BadRequest(new ErrorResponse
+                    {
+                        Error = new Error
+                        {
+                            Message = "Invalid request parameters",
+                            Details = new ErrorDetail { PropertyName = nameof(stationId), Message = "Invalid station Id." }
+                        }
+                    });
+                }
+
+                var readings = await _rainfallService.GetRainfallReadingsAsync(validStationId, count);
+                if (readings == null)
+                {
+                    return NotFound(new ErrorResponse
+                    {
+                        Error = new Error
+                        {
+                            Message = "No readings found for the specified stationId",
+                            Details = new ErrorDetail { Message = $"No reading found for specified stationId { stationId }" }
+                        }
+                    });
+                }
+
                 return Ok(readings);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, new ErrorResponse
+                {
+                    Error = new Error
+                    {
+                        Message = "Internal server error",
+                        Details = new ErrorDetail { Message = ex.Message }
+                    }
+                });
             }
         }
     }

@@ -3,7 +3,7 @@
     public class Error
     {
         public string Message { get; set; }
-        public List<ErrorDetail> Details { get; set; }
+        public ErrorDetail Details { get; set; }
     }
 
     public class ErrorDetail
