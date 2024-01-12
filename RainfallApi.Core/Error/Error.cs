@@ -1,4 +1,4 @@
-﻿namespace RainfallApi.Core
+﻿namespace RainfallApi.Core.Error
 {
     public class Error
     {
