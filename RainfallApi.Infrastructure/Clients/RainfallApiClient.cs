@@ -13,7 +13,7 @@ namespace RainfallApi.Infrastructure.Clients
             _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
         }
 
-        public async Task<ClientDTO<ResponseDTO<RainfallReadingDTO>>> GetRainfallReadingsAsync(string stationId, int count = 10)
+        public async Task<ClientDTO<ResponseDTO<RainfallReadingDTO>>> GetRainfallReadingsAsync(int stationId, int count = 10)
         {
             using var result = await _httpClient.GetAsync($"flood-monitoring/id/stations/{stationId}/readings?_limit={count}");
 

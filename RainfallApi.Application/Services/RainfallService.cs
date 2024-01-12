@@ -15,7 +15,7 @@ namespace RainfallApi.Application.Services
             _rainfallApiClient = rainfallApiClient ?? throw new ArgumentNullException(nameof(rainfallApiClient));
         }
 
-        public async Task<List<RainfallReading>> GetRainfallReadingsAsync(string stationId, int count = 10)
+        public async Task<List<RainfallReading>> GetRainfallReadingsAsync(int stationId, int count = 10)
         {
             List<RainfallReading> rainfallReadings = new List<RainfallReading>();
             try

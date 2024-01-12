@@ -38,7 +38,7 @@ namespace RainfallApi.Tests.RainfallApi.Infrastructure.Tests
             RainfallApiClient client = new RainfallApiClient(httpClient);
 
             // Act
-            var result = await client.GetRainfallReadingsAsync("stationId", 10);
+            var result = await client.GetRainfallReadingsAsync(500, 10);
 
             // Assert
             Assert.True(result.IsSuccess);
