@@ -11,6 +11,6 @@ namespace RainfallApi.Infrastructure.Responses
 
         public string Measure { get; set; }
 
-        public double Value { get; set; }
+        public decimal Value { get; set; }
     }
 }

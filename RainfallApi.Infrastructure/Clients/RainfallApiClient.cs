@@ -19,10 +19,16 @@ namespace RainfallApi.Infrastructure.Clients
 
             if (!result.IsSuccessStatusCode)
             {
-                return new ClientDTO<ResponseDTO<RainfallReadingDTO>> { IsSuccess = false, ErrorResponse = JsonConvert.DeserializeObject<Error>(await result.Content.ReadAsStringAsync()) };
+                return new ClientDTO<ResponseDTO<RainfallReadingDTO>> { 
+                    IsSuccess = false,
+                    ErrorResponse = JsonConvert.DeserializeObject<Error>(await result.Content.ReadAsStringAsync()) 
+                };
             }
 
-            return new ClientDTO<ResponseDTO<RainfallReadingDTO>>() { IsSuccess = true, SuccessResponse = JsonConvert.DeserializeObject<ResponseDTO<RainfallReadingDTO>>(await result.Content.ReadAsStringAsync()) };
+            return new ClientDTO<ResponseDTO<RainfallReadingDTO>>() {
+                IsSuccess = true,
+                SuccessResponse = JsonConvert.DeserializeObject<ResponseDTO<RainfallReadingDTO>>(await result.Content.ReadAsStringAsync()) 
+            };
         }
     }
 }

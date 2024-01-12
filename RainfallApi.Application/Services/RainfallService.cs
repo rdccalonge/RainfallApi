@@ -1,6 +1,8 @@
-﻿using RainfallApi.Core.Entities;
+﻿using AutoMapper;
+using RainfallApi.Core.Entities;
 using RainfallApi.Core.Interfaces;
 using RainfallApi.Infrastructure.Clients;
+using System.Collections.Generic;
 
 namespace RainfallApi.Application.Services
 {
@@ -15,10 +17,21 @@ namespace RainfallApi.Application.Services
 
         public async Task<List<RainfallReading>> GetRainfallReadingsAsync(string stationId, int count = 10)
         {
+            List<RainfallReading> rainfallReadings = new List<RainfallReading>();
             try
             {
-                var apiReadings = await _rainfallApiClient.GetRainfallReadingsAsync(stationId, count);
-                throw new NotImplementedException();
+                var result = await _rainfallApiClient.GetRainfallReadingsAsync(stationId, count);
+                if (result.IsSuccess)
+                {
+                    rainfallReadings = result.SuccessResponse.Items.Select(x => 
+                    new RainfallReading
+                    {
+                        AmountMeasured = x.Value,
+                        DateMeasured = x.DateTime
+                    })
+                    .ToList();
+                }
+                return rainfallReadings;
             }
             catch (HttpRequestException)
             {

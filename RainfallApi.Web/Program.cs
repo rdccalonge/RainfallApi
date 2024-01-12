@@ -1,3 +1,4 @@
+using AutoMapper;
 using RainfallApi.Application.Services;
 using RainfallApi.Core.Interfaces;
 using RainfallApi.Infrastructure.Clients;
