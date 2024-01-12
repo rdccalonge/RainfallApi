@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RainfallApi.Infrastructure.Responses
 {
-    public class ClientResponse<T>
+    public class ClientDTO<T>
     {
         public bool IsSuccess { get; set; }
 

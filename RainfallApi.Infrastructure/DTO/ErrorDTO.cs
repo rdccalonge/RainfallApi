@@ -3,7 +3,7 @@ using RainfallApi.Core.Error;
 
 namespace RainfallApi.Infrastructure.Responses
 {
-    public class ErrorResponse
+    public class ErrorDTO
     {
         public Error Error { get; set; }
     }

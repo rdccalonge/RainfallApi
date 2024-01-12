@@ -9,6 +9,6 @@ namespace RainfallApi.Infrastructure.Clients
 {
     public interface IRainfallApiClient
     {
-        Task<ClientResponse<ResponseDTO<RainfallReadingDTO>>> GetRainfallReadingsAsync(string stationId, int count = 10);
+        Task<ClientDTO<ResponseDTO<RainfallReadingDTO>>> GetRainfallReadingsAsync(string stationId, int count = 10);
     }
 }
