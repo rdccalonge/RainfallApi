@@ -42,6 +42,7 @@ namespace RainfallApi.Web.Controllers
             OperationId = "get-rainfall",
             Tags = new[] { "Rainfall" }
         )]
+        [Produces("application/json")]
         [SwaggerResponse(StatusCodes.Status200OK, "A list of rainfall readings successfully retrieved", typeof(RainfallReadingResponse))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, "Invalid request", typeof(ErrorResponse))]
         [SwaggerResponse(StatusCodes.Status404NotFound, "No readings found for the specified stationId", typeof(ErrorResponse))]

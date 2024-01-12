@@ -62,12 +62,8 @@ namespace RainfallApi.Web
             }
 
             app.UseHttpsRedirection();
-
             app.UseAuthorization();
-
-
             app.MapControllers();
-
             app.Run();
         }
     }
