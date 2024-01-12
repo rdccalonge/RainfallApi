@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace RainfallApi.Infrastructure.Responses
 {
-    public class ResponseDTO
+    public class ResponseDTO<T>
     {
         [JsonProperty("items")]
-        public string Items { get; set; }
+        public List<T> Items { get; set; }
     }
 }
