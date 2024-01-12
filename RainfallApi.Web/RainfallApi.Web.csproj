@@ -16,8 +16,4 @@
     <ProjectReference Include="..\RainfallApi.Application\RainfallApi.Application.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Responses\" />
-  </ItemGroup>
-
 </Project>
