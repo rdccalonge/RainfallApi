@@ -1,3 +1,5 @@
+using RainfallApi.Application.Services;
+using RainfallApi.Core.Interfaces;
 using RainfallApi.Infrastructure.Clients;
 
 namespace RainfallApi.Web
@@ -8,20 +10,23 @@ namespace RainfallApi.Web
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
+            var baseAddress = builder.Configuration.GetValue<string>("BaseUrl");
 
+            builder.Services.AddScoped<IRainfallService, RainfallService>();
+            builder.Services.AddScoped<IRainfallApiClient, RainfallApiClient>();
+
+            // Add services to the container.
+            builder.Services.AddHttpClient<IRainfallApiClient, RainfallApiClient>(client =>
+            {
+                client.BaseAddress = new Uri(baseAddress);
+            });
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddScoped<IRainfallService, RainfallService>();
+
             
-            var baseAddress = builder.Configuration.GetValue<string>("BaseUrl");
-
-            builder.Services.AddHttpClient<RainfallApiClient>(client =>
-            {
-                client.BaseAddress = new Uri(baseAddress);
-            });
-
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
