@@ -42,7 +42,7 @@ namespace RainfallApi.Web
 
                 c.AddServer(new OpenApiServer
                 {
-                    Url = "http://localhost:3000",
+                    Url = "http://localhost:3000/",
                     Description = "Rainfall Api"
                 });
 

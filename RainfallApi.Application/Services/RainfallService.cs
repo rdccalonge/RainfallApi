@@ -17,6 +17,7 @@ namespace RainfallApi.Application.Services
 
         public async Task<RainfallReadingResponseModel> GetRainfallReadingsAsync(int stationId, int count = 10)
         {
+            // TODO: Add logging
             RainfallReadingResponseModel rainfallReadingResponse = new RainfallReadingResponseModel();
             try
             {
