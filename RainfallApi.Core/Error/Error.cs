@@ -1,6 +1,6 @@
 ﻿namespace RainfallApi.Core
 {
-    public class ErrorResponse
+    public class Error
     {
         public string Message { get; set; }
         public List<ErrorDetail> Details { get; set; }
