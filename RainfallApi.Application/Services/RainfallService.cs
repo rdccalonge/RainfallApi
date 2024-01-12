@@ -15,14 +15,16 @@ namespace RainfallApi.Application.Services
             _rainfallApiClient = rainfallApiClient ?? throw new ArgumentNullException(nameof(rainfallApiClient));
         }
 
-        public async Task<List<RainfallReading>> GetRainfallReadingsAsync(int stationId, int count = 10)
+        public async Task<RainfallReadingResponseModel> GetRainfallReadingsAsync(int stationId, int count = 10)
         {
-            List<RainfallReading> rainfallReadings = new List<RainfallReading>();
+            RainfallReadingResponseModel rainfallReadingResponse = new RainfallReadingResponseModel();
             try
             {
                 var result = await _rainfallApiClient.GetRainfallReadingsAsync(stationId, count);
                 if (result.IsSuccess)
                 {
+
+                    List<RainfallReading> rainfallReadings = new List<RainfallReading>();
                     rainfallReadings = result.SuccessResponse.Items.Select(x => 
                     new RainfallReading
                     {
@@ -30,8 +32,11 @@ namespace RainfallApi.Application.Services
                         DateMeasured = x.DateTime
                     })
                     .ToList();
+
+                    rainfallReadingResponse.Readings = rainfallReadings;
                 }
-                return rainfallReadings;
+
+                return rainfallReadingResponse;
             }
             catch (HttpRequestException)
             {

@@ -51,6 +51,7 @@ namespace RainfallApi.Web
                 c.IncludeXmlComments(filePath);
             });
 
+            builder.Services.AddAutoMapper(typeof(Program));
 
             var app = builder.Build();
 

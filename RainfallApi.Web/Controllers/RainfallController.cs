@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using RainfallApi.Application.Helpers;
 using RainfallApi.Core.Entities;
 using RainfallApi.Core.Error;
@@ -19,16 +20,19 @@ namespace RainfallApi.Web.Controllers
     public class RainfallController : ControllerBase
     {
         private readonly IRainfallService _rainfallService;
+        private readonly IMapper _mapper;
 
         /// <summary>
         /// Get rainfall readings by station Id
         /// </summary>
         /// <param name="rainfallService">The api service.</param>
+        /// <param name="mapper">The mapper.</param>
         /// <exception cref="ArgumentNullException">
         /// </exception>
-        public RainfallController(IRainfallService rainfallService)
+        public RainfallController(IRainfallService rainfallService, IMapper mapper)
         {
             _rainfallService = rainfallService ?? throw new ArgumentNullException(nameof(rainfallService));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         /// <summary>
@@ -64,8 +68,8 @@ namespace RainfallApi.Web.Controllers
                     });
                 }
 
-                var readings = await _rainfallService.GetRainfallReadingsAsync(validStationId, count);
-                if (readings == null)
+                var result = await _rainfallService.GetRainfallReadingsAsync(validStationId, count);
+                if (result == null)
                 {
                     return NotFound(new ErrorResponse
                     {
@@ -76,8 +80,8 @@ namespace RainfallApi.Web.Controllers
                         }
                     });
                 }
-
-                return Ok(readings);
+                
+                return Ok(_mapper.Map<RainfallReadingResponseModel, RainfallReadingResponse>(result));
             }
             catch (Exception ex)
             {
