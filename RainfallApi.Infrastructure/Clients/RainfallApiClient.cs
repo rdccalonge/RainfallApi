@@ -1,5 +1,9 @@
 ﻿using AutoMapper;
+using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using RainfallApi.Core.Entities;
+using RainfallApi.Core.Error;
+using RainfallApi.Infrastructure.Responses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,17 +15,22 @@ namespace RainfallApi.Infrastructure.Clients
     public class RainfallApiClient
     {
         private readonly HttpClient _httpClient;
-        private readonly IMapper _mapper;
 
-        public RainfallApiClient(HttpClient httpClient, IMapper mapper)
+        public RainfallApiClient(HttpClient httpClient)
         {
             _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
-            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        public async Task<List<RainfallReading>> GetRainfallReadingsAsync(string stationId, int count = 10)
+        public async Task<ClientResponse<ResponseDTO>> GetRainfallReadingsAsync(string stationId, int count = 10)
         {
-            throw new NotImplementedException();
+            using var result = await _httpClient.GetAsync($"flood-monitoring/id/stations/{stationId}?count={count}");
+
+            if (!result.IsSuccessStatusCode)
+            {
+                return new ClientResponse<ResponseDTO> { IsSuccess = false, ErrorResponse = JsonConvert.DeserializeObject<Error>(await result.Content.ReadAsStringAsync()) };
+            }
+
+            return new ClientResponse<ResponseDTO>() { IsSuccess = true, SuccessResponse = JsonConvert.DeserializeObject<ResponseDTO>(await result.Content.ReadAsStringAsync()) };
         }
     }
 }

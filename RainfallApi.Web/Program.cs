@@ -1,3 +1,5 @@
+using RainfallApi.Infrastructure.Clients;
+
 namespace RainfallApi.Web
 {
     public class Program
@@ -12,6 +14,13 @@ namespace RainfallApi.Web
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            
+            var baseAddress = builder.Configuration.GetValue<string>("BaseUrl");
+
+            builder.Services.AddHttpClient<RainfallApiClient>(client =>
+            {
+                client.BaseAddress = new Uri(baseAddress);
+            });
 
             var app = builder.Build();
 
