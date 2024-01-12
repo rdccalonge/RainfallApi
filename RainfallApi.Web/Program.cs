@@ -1,7 +1,9 @@
 using AutoMapper;
+using Microsoft.OpenApi.Models;
 using RainfallApi.Application.Services;
 using RainfallApi.Core.Interfaces;
 using RainfallApi.Infrastructure.Clients;
+using System.Reflection;
 
 namespace RainfallApi.Web
 {
@@ -24,10 +26,32 @@ namespace RainfallApi.Web
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
-            builder.Services.AddScoped<IRainfallService, RainfallService>();
+            builder.Services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "Rainfall Api",
+                    Version = "v1",
+                    Description = "An API which provides rainfall reading data",
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Sorted",
+                        Url = new Uri("https://www.sorted.com")
+                    }
+                });
 
-            
+                c.AddServer(new OpenApiServer
+                {
+                    Url = "http://localhost:3000",
+                    Description = "Rainfall Api"
+                });
+
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var filePath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(filePath);
+            });
+
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
