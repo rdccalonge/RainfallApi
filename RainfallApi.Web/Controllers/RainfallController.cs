@@ -1,21 +1,51 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using RainfallApi.Core.Entities;
 using RainfallApi.Core.Interfaces;
+using RainfallApi.Web.Responses;
+using Swashbuckle.AspNetCore.Annotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace RainfallApi.Web.Controllers
 {
+    /// <summary>
+    /// Provides methods for testing the Rainfall API.
+    /// </summary>
+    /// <seealso cref="ControllerBase" />
     [ApiController]
+    [SwaggerTag("Rainfall", "Operations relating to rainfall")]
     [Route("api/[controller]")]
     public class RainfallController : ControllerBase
     {
         private readonly IRainfallService _rainfallService;
 
+        /// <summary>
+        /// Get rainfall readings by station Id
+        /// </summary>
+        /// <param name="rainfallService">The api service.</param>
+        /// <exception cref="ArgumentNullException">
+        /// </exception>
         public RainfallController(IRainfallService rainfallService)
         {
             _rainfallService = rainfallService ?? throw new ArgumentNullException(nameof(rainfallService));
         }
 
+        /// <summary>
+        /// Get rainfall readings by station Id.
+        /// </summary>
+        /// <param name="stationId">The id of the reading station.</param>
+        /// <param name="count">The number of readings to return.</param>
+        [SwaggerOperation(
+        Summary = "Get rainfall readings by station Id",
+            Description = "Retrieve the latest readings for the specified stationId",
+            OperationId = "get-rainfall",
+            Tags = new[] { "Rainfall" }
+        )]
+        [SwaggerResponse(StatusCodes.Status200OK, "A list of rainfall readings successfully retrieved", typeof(RainfallReadingResponse))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, "Invalid request", typeof(ErrorResponse))]
+        [SwaggerResponse(StatusCodes.Status404NotFound, "No readings found for the specified stationId", typeof(ErrorResponse))]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError, "Internal server error", typeof(ErrorResponse))]
         [HttpGet("id/{stationId}/readings")]
-        public async Task<IActionResult> GetRainfallReadings(string stationId, [FromQuery] int count = 10)
+        public async Task<IActionResult> GetRainfallReadings([FromRoute] string stationId, [FromQuery][Range(1, 100)] int count = 10)
         {
             try
             {
