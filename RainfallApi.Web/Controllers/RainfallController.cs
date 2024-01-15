@@ -15,7 +15,6 @@ namespace RainfallApi.Web.Controllers
     /// </summary>
     /// <seealso cref="ControllerBase" />
     [ApiController]
-    [SwaggerTag("Rainfall", "Operations relating to rainfall")]
     [Route("api/[controller]")]
     public class RainfallController : ControllerBase
     {
