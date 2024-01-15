@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <Folder Include="MockExtensions\" />
-    <Folder Include="RainfallApi.Web.Tests\" />
     <Folder Include="RainfallApi.Core.Tests\" />
   </ItemGroup>
 
@@ -25,6 +24,7 @@
   <ItemGroup>
     <ProjectReference Include="..\RainfallApi.Application\RainfallApi.Application.csproj" />
     <ProjectReference Include="..\RainfallApi.Infrastructure\RainfallApi.Infrastructure.csproj" />
+    <ProjectReference Include="..\RainfallApi.Web\RainfallApi.Web.csproj" />
   </ItemGroup>
 
 </Project>

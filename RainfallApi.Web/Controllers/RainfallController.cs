@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using RainfallApi.Application.Helpers;
 using RainfallApi.Core.Entities;
 using RainfallApi.Core.Error;
@@ -47,9 +48,9 @@ namespace RainfallApi.Web.Controllers
         )]
         [Produces("application/json")]
         [SwaggerResponse(StatusCodes.Status200OK, "A list of rainfall readings successfully retrieved", typeof(RainfallReadingResponse))]
-        [SwaggerResponse(StatusCodes.Status204NoContent, "Reading is empty", typeof(ErrorResponse))]
+        [SwaggerResponse(StatusCodes.Status204NoContent, "No readings found for the specified stationId", typeof(ErrorResponse))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, "Invalid request", typeof(ErrorResponse))]
-        [SwaggerResponse(StatusCodes.Status404NotFound, "No readings found for the specified stationId", typeof(ErrorResponse))]
+        [SwaggerResponse(StatusCodes.Status404NotFound, "The requested resource does not exist.", typeof(ErrorResponse))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, "Internal server error", typeof(ErrorResponse))]
         [HttpGet("id/{stationId}/readings")]
         public async Task<IActionResult> GetRainfallReadings([FromRoute] string stationId, [Range(1, 100)] int count = 10)
@@ -76,14 +77,23 @@ namespace RainfallApi.Web.Controllers
                     {
                         Error = new Error
                         {
-                            Message = "No readings found for the specified stationId",
-                            Details = new ErrorDetail { Message = $"No reading found for specified stationId { stationId }" }
+                            Message = "The requested resource does not exist.",
                         }
                     });
                 }
 
                 if (!result.Readings.Any())
-                    return NoContent();
+                {
+                    return StatusCode(StatusCodes.Status204NoContent, new ErrorResponse
+                    {
+                        Error = new Error
+                        {
+                            Message = "No Readings Found.",
+                            Details = new ErrorDetail { PropertyName = nameof(stationId), Message = $"No readings found for the specified stationId { stationId }" }
+                        }
+                    });
+                }
+                      
 
                 return Ok(_mapper.Map<RainfallReadingResponseModel, RainfallReadingResponse>(result));
             }
