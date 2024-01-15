@@ -53,7 +53,7 @@ namespace RainfallApi.Web.Controllers
         [SwaggerResponse(StatusCodes.Status404NotFound, "No readings found for the specified stationId", typeof(ErrorResponse))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, "Internal server error", typeof(ErrorResponse))]
         [HttpGet("id/{stationId}/readings")]
-        public async Task<IActionResult> GetRainfallReadings([FromRoute] string stationId, [FromQuery][Range(1, 100)] int count = 10)
+        public async Task<IActionResult> GetRainfallReadings([FromRoute] string stationId, [Range(1, 100)] int count = 10)
         {
             try
             {

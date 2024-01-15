@@ -50,6 +50,7 @@ namespace RainfallApi.Web
                 var filePath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(filePath);
 
+                c.EnableAnnotations();
                 c.DocumentFilter<TagDescriptionsDocumentFilter>();
             });
 
