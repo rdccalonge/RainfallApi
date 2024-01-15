@@ -31,7 +31,7 @@ namespace RainfallApi.Web
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Title = "Rainfall Api",
-                    Version = "v1",
+                    Version = "1.0",
                     Description = "An API which provides rainfall reading data",
                     Contact = new OpenApiContact
                     {
@@ -49,6 +49,8 @@ namespace RainfallApi.Web
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var filePath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(filePath);
+
+                c.DocumentFilter<TagDescriptionsDocumentFilter>();
             });
 
             builder.Services.AddAutoMapper(typeof(Program));
