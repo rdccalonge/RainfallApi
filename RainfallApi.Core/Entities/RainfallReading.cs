@@ -1,5 +1,9 @@
 ﻿namespace RainfallApi.Core.Entities
 {
+
+    /// <summary>
+    /// Details of a rainfall reading
+    /// </summary>
     public class RainfallReading
     {
         public DateTime DateMeasured { get; set; }
