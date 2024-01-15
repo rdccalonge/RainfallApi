@@ -48,6 +48,7 @@ namespace RainfallApi.Web.Controllers
         )]
         [Produces("application/json")]
         [SwaggerResponse(StatusCodes.Status200OK, "A list of rainfall readings successfully retrieved", typeof(RainfallReadingResponse))]
+        [SwaggerResponse(StatusCodes.Status204NoContent, "Reading is empty", typeof(ErrorResponse))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, "Invalid request", typeof(ErrorResponse))]
         [SwaggerResponse(StatusCodes.Status404NotFound, "No readings found for the specified stationId", typeof(ErrorResponse))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError, "Internal server error", typeof(ErrorResponse))]
@@ -69,6 +70,7 @@ namespace RainfallApi.Web.Controllers
                 }
 
                 var result = await _rainfallService.GetRainfallReadingsAsync(validStationId, count);
+
                 if (result == null)
                 {
                     return NotFound(new ErrorResponse
@@ -80,7 +82,10 @@ namespace RainfallApi.Web.Controllers
                         }
                     });
                 }
-                
+
+                if (!result.Readings.Any())
+                    return NoContent();
+
                 return Ok(_mapper.Map<RainfallReadingResponseModel, RainfallReadingResponse>(result));
             }
             catch (Exception ex)
