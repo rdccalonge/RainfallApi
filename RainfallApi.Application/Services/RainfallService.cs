@@ -19,30 +19,24 @@ namespace RainfallApi.Application.Services
         {
             // TODO: Add logging
             RainfallReadingResponseModel rainfallReadingResponse = new RainfallReadingResponseModel();
-            try
+
+            var result = await _rainfallApiClient.GetRainfallReadingsAsync(stationId, count);
+            if (result.IsSuccess)
             {
-                var result = await _rainfallApiClient.GetRainfallReadingsAsync(stationId, count);
-                if (result.IsSuccess)
+
+                List<RainfallReading> rainfallReadings = new List<RainfallReading>();
+                rainfallReadings = result.SuccessResponse.Items.Select(x =>
+                new RainfallReading
                 {
+                    AmountMeasured = x.Value,
+                    DateMeasured = x.DateTime
+                })
+                .ToList();
 
-                    List<RainfallReading> rainfallReadings = new List<RainfallReading>();
-                    rainfallReadings = result.SuccessResponse.Items.Select(x => 
-                    new RainfallReading
-                    {
-                        AmountMeasured = x.Value,
-                        DateMeasured = x.DateTime
-                    })
-                    .ToList();
-
-                    rainfallReadingResponse.Readings = rainfallReadings;
-                }
-
-                return rainfallReadingResponse;
+                rainfallReadingResponse.Readings = rainfallReadings;
             }
-            catch (HttpRequestException)
-            {
-                throw new ApplicationException("Error connecting to the Rainfall API.");
-            }
+
+            return rainfallReadingResponse;
         }
     }
 }
