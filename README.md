@@ -11,4 +11,4 @@ Rainfall API is a .NET Core application that interfaces with a public API to fet
 
 git clone https://github.com/rdccalonge/RainfallApi.git
 
-Access the API at `https://localhost:50194/`
+Access the API at `https://localhost:50194/swagger/index.html`
